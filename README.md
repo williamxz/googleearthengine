@@ -14,3 +14,4 @@
 - Create a VRT file for each large tile using a commpand like `gdalbuildvrt sentinel_2018_dallas.vrt sentinel_texas/sentinel_2018_dallas*`
 
 ## Cutting out smaller images
+- Create a shapefile of the polygons you want to cut out.
