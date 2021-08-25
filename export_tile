@@ -1,0 +1,51 @@
+var rectList = [
+  ee.Geometry.Rectangle([-97.82249, 32.25186, -95.81363, 33.89417]), //Dallas, largest cluster
+  ee.Geometry.Rectangle([-96.08134, 28.93483, -94.744, 30.59284]), //Houston, 2nd largest
+  ee.Geometry.Rectangle([-99.14456, 29.12341, -97.39917, 30.77012]), //Austin/San Antonio
+  ee.Geometry.Rectangle([-98.49352, 25.85538, -97.1959, 26.45455]), //Gulf of Mexico
+  ee.Geometry.Rectangle([-97.81791, 30.90218, -96.95091, 31.81163]), //Waco? Seems strange
+  ee.Geometry.Rectangle([-106.4264, 31.56303, -106.0942, 31.88843]), //El Paso
+]
+
+// var rectList = [
+//   ee.Geometry.Rectangle([-102.1313, 34.922000000000004, -101.5313, 35.522]),//amarillo
+//   ee.Geometry.Rectangle([-102.0552, 33.3779, -101.6552, 33.7779]),//lubbock
+//   ee.Geometry.Rectangle([-94.5266, 29.680200000000003, -93.72659999999999, 30.4802]),//beaumont
+//   ee.Geometry.Rectangle([-97.8964, 27.3006, -96.8964, 28.3006]),//corpus_christi
+//   ee.Geometry.Rectangle([-102.71759999999999, 31.4957, -102.0176, 32.1957]),//odessa
+//   ee.Geometry.Rectangle([-96.67, 30.374399999999998, -96.07000000000001, 30.9744])//bryan
+// ]
+
+var vis = {
+      bands: ['B4', 'B3', 'B2'], 
+      min: 0,
+      max: 3000,
+};
+
+for (var year = 2016; year <= 2016; year++) {
+  //var dataset = ee.ImageCollection('USDA/NAIP/DOQQ')
+  //                  .filter(ee.Filter.date(year + '-01-01', year + '-12-31'));
+  var dataset = ee.ImageCollection('COPERNICUS/S2')
+                    .filter(ee.Filter.date(year.toString()+'-08-01', year.toString()+'-12-30'))
+                    .filterMetadata('CLOUD_COVERAGE_ASSESSMENT', 'less_than', 8)
+                    .sort('CLOUDY_PIXEL_PERCENTAGE')
+                    .select(['B2', 'B3', 'B4']); //selects RGB bands
+  var trueColor = dataset.median().visualize(vis); //get viewable RGB image from imagecollection
+
+  Map.setCenter(-96.7970, 32.7767);
+
+  //label all images by associated regions
+  var region_names = ['dallas', 'houston', 'austin', 'gulf', 'waco', 'elpaso']
+  // var region_names = ['amarillo', 'lubbock', 'beaumont', 'corpus_christi', 'odessa', 'bryan']
+  for (var i = 0; i < 6; i++) { //export all rectangles separately
+    Map.addLayer(trueColor.clip(rectList[i]), {});
+    Export.image.toDrive({
+      image: trueColor,
+      folder: 'sentineltexas',
+      description: 'sentinel_' + year + '_' + region_names[i],
+      scale: 10, //how many meters per pixel
+      region: rectList[i],
+      maxPixels: 1E13
+    });
+  }
+}
