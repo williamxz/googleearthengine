@@ -2,7 +2,11 @@
 
 ## Things to know
 - Google Earth Engine has a limit of 3000 tasks at one time. Tasks exceeding that will not be processed.
+- Use Google Earth Engine Code Editor if you want to be able to visualize images before downloading them.
+- Use Google Earth Engine Code Editor to check the status of your exports (under the Tasks tab). You will be able to see if it ran into errors there as well.
+- Use Google Colab if you are exporting many images.
 - This code is for example only, it is not guranteed to work for your use case. Most likely, you will need to make modifications.
+- Use rclone on scdt.stanford.edu to transfer files from Google Drive to atlas. This will provide you with speeds around 100 MB/s.
 
 ## Prerequisites
 - Have a Google Earth Engine account. You will need to apply for access. This may take a day to be approved. Do this using your Stanford account, as you will need a lot of space on Google Drive.
@@ -26,8 +30,16 @@ If you want to do this, the best way is to dowload a large image of the entire r
 - Create a shapefile of the polygons you want to cut out. An example of how to do so can be found in `create_shapefile.py`
 - Cut out the smaller images using a script like `export_images.py`
 
-## Downloading images corresponding to a preexisting dataset
+## Downloading images corresponding to a pre-existing dataset
 
 This is how the xView-2 and SpaceNet-7 corresponding datasets were obtained. Make sure that the dataset contains enough location metadata to get the polygon for each image. If the images are provided as GeoTIFFs, you can extract the coordinates from that.
 
+### Getting shapefiles from GeoTIFF
+- An example for the xView-2 dataset is shown in `create_shapefile_xview2.py`
+- Note that this shapefile also has dates, since it was important to export corresponding images around the same date
 
+### Exporting using shapefile using Google Colab
+- Using Google Earth Engine Code Editor is not recommended for exporting many files because you will need to start each one manually.
+- An example of a Google Colab notebook used to export the xView-2 corresponding dataset is in `export_sentinel_xview2.ipynb`
+- Once they are downloaded, you may want to manually check for cloud cover.
+- Transfer them to atlas using rclone.
