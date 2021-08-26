@@ -9,6 +9,7 @@
 - Use rclone on scdt.stanford.edu to transfer files from Google Drive to atlas. This will provide you with speeds around 100 MB/s.
 
 ## Prerequisites
+- Know how to use atlas and conda environments. There is a demo here: https://github.com/KellyYutongHe/atlasdemo
 - Have a Google Earth Engine account. You will need to apply for access. This may take a day to be approved. Do this using your Stanford account, as you will need a lot of space on Google Drive.
 - Set up rclone on scdt.stanford.edu and mount your Google Drive. You will use this to transfer files from Google Drive to atlas.
 - Make sure to set up your conda environment on atlas so you don't run out of space
@@ -28,7 +29,7 @@ If you want to do this, the best way is to dowload a large image of the entire r
 
 ### Cutting out smaller images
 - Create a shapefile of the polygons you want to cut out. An example of how to do so can be found in `create_shapefile.py`
-- Cut out the smaller images using a script like `export_images.py`
+- Cut out the smaller images using a script like `export_images.py` (do this on atlas)
 
 ## Downloading images corresponding to a pre-existing dataset
 
