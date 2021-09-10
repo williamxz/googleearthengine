@@ -1,4 +1,4 @@
-# Google Earth Engine Tutorial with GEE Code Editor
+# Google Earth Engine Tutorial with GEE Code Editor and Colab
 
 ## Things to know
 - Google Earth Engine has a limit of 3000 tasks at one time. Tasks exceeding that will not be processed.
